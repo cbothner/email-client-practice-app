@@ -32,4 +32,9 @@ export function getMessageSubject(message: Message): ?string {
   return subjectHeader && subjectHeader.value;
 }
 
+// The internalDates are stringified unix timestamps
+export function getMessageTimestamp({ internalDate }: Message): Date {
+  return new Date(Number(internalDate));
+}
+
 export default store;
