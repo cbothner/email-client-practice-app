@@ -8,6 +8,7 @@
     "node": true
   },
   "rules": {
+    "function-paren-newline": "off",
     "max-len": ["error", 80],
     "no-confusing-arrow": "off"
   }
