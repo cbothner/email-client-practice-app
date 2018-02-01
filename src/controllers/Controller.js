@@ -6,6 +6,7 @@
  */
 
 export default class Controller<State: Object> {
+  actions: { [string]: EventHandler } = {};
   container: HTMLElement;
   state: State;
 
@@ -24,5 +25,21 @@ export default class Controller<State: Object> {
 
   render(view?: string) {
     this.container.innerHTML = view || '';
+    this._connect();
+  }
+
+  _connect() {
+    Object.keys(this.actions).forEach(name =>
+      this.container
+        .querySelectorAll(`[data-action="${name}"]`)
+        .forEach(
+          element =>
+            element.dataset.eventType != null &&
+            element.addEventListener(
+              element.dataset.eventType,
+              this.actions[name],
+            ),
+        ),
+    );
   }
 }
