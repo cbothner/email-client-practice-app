@@ -25,7 +25,7 @@ const Header = ({
   selectedMailbox: string,
 }) => html`
   <h2 class="email-header">
-    <select>
+    <select data-action="switchMailbox" data-event-type="change">
       ${mailboxes.map(mailbox => Option({ mailbox, selectedMailbox })).join('')}
     </select>
   </h2>

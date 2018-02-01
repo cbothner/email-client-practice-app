@@ -16,6 +16,14 @@ export default class SidebarController extends Controller<{
 }> {
   state = { selectedMailbox: 'INBOX' };
 
+  actions = {
+    switchMailbox: (e: Event) => {
+      if (e.currentTarget instanceof HTMLSelectElement) {
+        this.setState({ selectedMailbox: e.currentTarget.value });
+      }
+    },
+  };
+
   render() {
     const mailboxes = Object.keys(store.mailboxes);
     const threads = this._threads();
