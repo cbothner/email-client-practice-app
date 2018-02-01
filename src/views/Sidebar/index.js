@@ -7,18 +7,21 @@
 
 import html from '../../utility/html';
 
+import Header from './Header';
 import ThreadItem from './ThreadItem';
 
 import type { Thread } from '../../store/types';
 
 const Sidebar = ({
-  mailbox,
+  mailboxes,
+  selectedMailbox,
   threads,
 }: {
-  mailbox: string,
+  mailboxes: string[],
+  selectedMailbox: string,
   threads: Thread[],
 }) => html`
-  <h2 class="email-header">${mailbox}</h2>
+  ${Header({ mailboxes, selectedMailbox })}
 
   <ul class="email-list">
     ${threads.map(thread => ThreadItem({ thread })).join('')}

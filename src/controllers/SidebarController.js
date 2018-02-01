@@ -10,31 +10,32 @@ import store from '../store';
 
 import Sidebar from '../views/Sidebar';
 
-type State = { +mailbox: string };
+type State = { +selectedMailbox: string };
 export default class SidebarContents {
   container: HTMLElement;
-  state: State = { mailbox: 'INBOX' };
+  state: State = { selectedMailbox: 'INBOX' };
 
   constructor(container: HTMLElement) {
     this.container = container;
   }
 
-  set mailbox(mailbox: string) {
-    this.state = { mailbox };
+  set selectedMailbox(selectedMailbox: string) {
+    this.state = { selectedMailbox };
     this.render();
   }
 
   render() {
+    const mailboxes = Object.keys(store.mailboxes);
     const threads = this._threads();
-    const { mailbox } = this.state;
+    const { selectedMailbox } = this.state;
 
-    this.container.innerHTML = Sidebar({ mailbox, threads });
+    this.container.innerHTML = Sidebar({ selectedMailbox, threads, mailboxes });
   }
 
   _threads() {
-    const mailbox = store.mailboxes[this.state.mailbox];
-    if (mailbox == null) return [];
+    const selectedMailbox = store.mailboxes[this.state.selectedMailbox];
+    if (selectedMailbox == null) return [];
 
-    return mailbox.threadIds.map(threadId => store.threads[threadId]);
+    return selectedMailbox.threadIds.map(threadId => store.threads[threadId]);
   }
 }
