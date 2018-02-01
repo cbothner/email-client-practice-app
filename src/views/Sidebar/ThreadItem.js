@@ -1,21 +1,21 @@
 /**
- * The sidebar lists the email threads contained in a mailbox.
+ * One thread item for listing in the sidebar
  *
- * @providesModule Sidebar
+ * @providesModule ThreadItem
  * @flow
  */
 
-import html from '../utility/html';
+import html from '../../utility/html';
 
 import store, {
   getMessageSender,
   getMessageSubject,
   getMessageTimestamp,
-} from '../store';
+} from '../../store';
 
-import type { Thread } from '../store/types';
+import type { Thread } from '../../store/types';
 
-const SidebarItem = ({ thread }: { thread: Thread }) => {
+const ThreadItem = ({ thread }: { thread: Thread }) => {
   const { messages } = thread;
   const lastMessage = store.messages[messages[messages.length - 1].id];
 
@@ -40,18 +40,4 @@ const SidebarItem = ({ thread }: { thread: Thread }) => {
   `;
 };
 
-const Sidebar = ({
-  mailbox,
-  threads,
-}: {
-  mailbox: string,
-  threads: Thread[],
-}) => html`
-  <h2 class="email-header">${mailbox}</h2>
-
-  <ul class="email-list">
-    ${threads.map(thread => SidebarItem({ thread })).join('')}
-  </ul>
- `;
-
-export default Sidebar;
+export default ThreadItem;
