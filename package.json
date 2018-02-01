@@ -16,7 +16,6 @@
     "url": "https://github.com/letscodework/email-client-practice-app"
   },
   "scripts": {
-    "flow": "flow check",
     "lint": "npm run lint:js && npm run lint:sass",
     "lint:js": "eslint 'src/**/*.js'",
     "lint:sass": "stylelint 'src/**/*.scss'",
