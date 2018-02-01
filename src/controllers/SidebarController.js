@@ -8,28 +8,26 @@
 
 import store from '../store';
 
+import Controller from './Controller';
 import Sidebar from '../views/Sidebar';
 
-type State = { +selectedMailbox: string };
-export default class SidebarContents {
-  container: HTMLElement;
-  state: State = { selectedMailbox: 'INBOX' };
-
-  constructor(container: HTMLElement) {
-    this.container = container;
-  }
-
-  set selectedMailbox(selectedMailbox: string) {
-    this.state = { selectedMailbox };
-    this.render();
-  }
+export default class SidebarController extends Controller<{
+  selectedMailbox: string,
+}> {
+  state = { selectedMailbox: 'INBOX' };
 
   render() {
     const mailboxes = Object.keys(store.mailboxes);
     const threads = this._threads();
     const { selectedMailbox } = this.state;
 
-    this.container.innerHTML = Sidebar({ selectedMailbox, threads, mailboxes });
+    super.render(
+      Sidebar({
+        selectedMailbox,
+        threads,
+        mailboxes,
+      }),
+    );
   }
 
   _threads() {
