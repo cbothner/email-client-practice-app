@@ -5,21 +5,36 @@
  * @flow
  */
 
+import Rfc822Address from '../utility/Rfc822Address';
+
 import type { Data, Message } from './types';
 
 const store: Data = require('./emails.json');
 
 /**
- * You might find it useful to implement some functions that make accessing
- * deeply nested attributes of Messages or Threads...
+ * Message helpers
  */
 
-// For example, this returns the subject of a given message if it is defined
-// by a header in the message payload
+export function getMessageSender(message: Message): Rfc822Address {
+  const { headers } = message.payload;
+  const fromHeader = headers.find(header => header.name === 'From');
+
+  if (fromHeader == null) {
+    throw new Error('Every email must have been sent by someone!');
+  }
+
+  return new Rfc822Address(fromHeader.value);
+}
+
 export function getMessageSubject(message: Message): ?string {
   const { headers } = message.payload;
   const subjectHeader = headers.find(header => header.name === 'Subject');
   return subjectHeader && subjectHeader.value;
+}
+
+// The internalDates are stringified unix timestamps
+export function getMessageTimestamp({ internalDate }: Message): Date {
+  return new Date(Number(internalDate));
 }
 
 export default store;
