@@ -9,5 +9,5 @@ import SidebarController from './controllers/SidebarController';
   if (container == null) return;
 
   const sidebarController = new SidebarController(container);
-  sidebarController.mailbox = 'INBOX';
+  sidebarController.setState({ selectedMailbox: 'INBOX' });
 })();

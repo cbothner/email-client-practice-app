@@ -8,33 +8,40 @@
 
 import store from '../store';
 
+import Controller from './Controller';
 import Sidebar from '../views/Sidebar';
 
-type State = { +mailbox: string };
-export default class SidebarContents {
-  container: HTMLElement;
-  state: State = { mailbox: 'INBOX' };
+export default class SidebarController extends Controller<{
+  selectedMailbox: string,
+}> {
+  state = { selectedMailbox: 'INBOX' };
 
-  constructor(container: HTMLElement) {
-    this.container = container;
-  }
-
-  set mailbox(mailbox: string) {
-    this.state = { mailbox };
-    this.render();
-  }
+  actions = {
+    switchMailbox: (e: Event) => {
+      if (e.currentTarget instanceof HTMLSelectElement) {
+        this.setState({ selectedMailbox: e.currentTarget.value });
+      }
+    },
+  };
 
   render() {
+    const mailboxes = Object.keys(store.mailboxes);
     const threads = this._threads();
-    const { mailbox } = this.state;
+    const { selectedMailbox } = this.state;
 
-    this.container.innerHTML = Sidebar({ mailbox, threads });
+    super.render(
+      Sidebar({
+        selectedMailbox,
+        threads,
+        mailboxes,
+      }),
+    );
   }
 
   _threads() {
-    const mailbox = store.mailboxes[this.state.mailbox];
-    if (mailbox == null) return [];
+    const selectedMailbox = store.mailboxes[this.state.selectedMailbox];
+    if (selectedMailbox == null) return [];
 
-    return mailbox.threadIds.map(threadId => store.threads[threadId]);
+    return selectedMailbox.threadIds.map(threadId => store.threads[threadId]);
   }
 }
